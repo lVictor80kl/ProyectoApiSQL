@@ -4,8 +4,17 @@
  */
 package com.registro.CRUD.SpringReal23.model;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.io.Serializable;
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -226,6 +235,8 @@ public class Product implements Serializable {
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
+
+
 }
 
 @Embeddable

@@ -4,6 +4,10 @@
  */
 package com.registro.CRUD.SpringReal23.model;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embeddable;
@@ -14,9 +18,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -48,8 +49,7 @@ public class Product implements Serializable {
     @ElementCollection
     private List<String> tags;
     
-    @ElementCollection
-    private List<String> images;
+    private String images;
     
     private String thumbnail;
     
@@ -204,11 +204,11 @@ public class Product implements Serializable {
         this.tags = tags;
     }
 
-    public List<String> getImages() {
+    public String getImages() {
         return images;
     }
 
-    public void setImages(List<String> images) {
+    public void setImages(String images) {
         this.images = images;
     }
 

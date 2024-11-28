@@ -1,35 +1,45 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.registro.CRUD.SpringReal23.service;
-import com.registro.CRUD.SpringReal23.model.Product;
-import com.registro.CRUD.SpringReal23.repository.ProductRepository;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
+import com.registro.CRUD.SpringReal23.model.Product;
+import com.registro.CRUD.SpringReal23.repository.ProductRepository;
 
 @Service
 public class ProductService {
-    
+
     @Autowired
     private ProductRepository productRepository;
-    
+
+    // Listar todos los productos
     public List<Product> listarTodas() {
         return productRepository.findAll();
     }
 
+    // Guardar un solo producto
     public Product guardar(Product product) {
         return productRepository.save(product);
     }
 
-    public Product obtenerPorId(Long id) {
-        return productRepository.findById(id).orElse(null);   
+    // Guardar múltiples productos
+    public List<Product> guardarTodos(List<Product> products) {
+        return productRepository.saveAll(products);
     }
 
+    // Obtener un producto por su ID
+    public Product obtenerPorId(Long id) {
+        return productRepository.findById(id).orElse(null);
+    }
+
+    // Eliminar un producto por su ID
     public void eliminar(Long id) {
         productRepository.deleteById(id);
     }
+}
+
 
 /*public Product editar(Product product, Long id) {
     // Buscar el producto antiguo por id
@@ -87,6 +97,4 @@ public class ProductService {
     return productRepository.save(oldProduct);
 }
 */
-
-}
  

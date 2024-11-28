@@ -4,12 +4,13 @@
  */
 package com.registro.CRUD.SpringReal23.repository;
 
-import com.registro.CRUD.SpringReal23.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.registro.CRUD.SpringReal23.model.Product;
 
 /**
  *
- * @author victo
+ * @author victor
  */
 public interface ProductRepository extends JpaRepository <Product, Long> {
     

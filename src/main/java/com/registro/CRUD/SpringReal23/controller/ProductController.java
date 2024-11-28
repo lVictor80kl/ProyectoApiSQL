@@ -58,13 +58,8 @@ public class ProductController {
     }
 
     @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<Void> eliminarProduct(@PathVariable Long id) {
-        try {
-            productService.eliminar(id);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        productService.eliminar(id);
+        return ResponseEntity.ok().build();
     }
 }
-

@@ -17,6 +17,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 @Entity
@@ -55,6 +57,22 @@ public class Product implements Serializable {
     
     @Embedded
     private Meta meta;
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.meta == null) {
+            this.meta = new Meta();
+        }
+        this.meta.setCreatedAt(LocalDateTime.now());
+        this.meta.setUpdatedAt(LocalDateTime.now());
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        if (this.meta != null) {
+            this.meta.setUpdatedAt(LocalDateTime.now());
+        }
+    }
     
     @OneToMany(cascade = CascadeType.ALL)
     private List<Review> reviews;

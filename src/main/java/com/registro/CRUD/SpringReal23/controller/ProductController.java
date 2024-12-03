@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.registro.CRUD.SpringReal23.model.Product;
 import com.registro.CRUD.SpringReal23.service.ProductService;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/products")
@@ -61,5 +62,15 @@ public class ProductController {
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         productService.eliminar(id);
         return ResponseEntity.ok().build();
+    }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> editProduct(@PathVariable Long id, @RequestBody Product product) {
+        try {
+            Product updatedProduct = productService.editar(product, id);
+            return ResponseEntity.ok(updatedProduct);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }

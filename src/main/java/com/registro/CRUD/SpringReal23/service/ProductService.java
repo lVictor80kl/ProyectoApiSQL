@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.registro.CRUD.SpringReal23.model.Product;
 import com.registro.CRUD.SpringReal23.repository.ProductRepository;
+import java.util.ArrayList;
+import org.hibernate.Hibernate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -36,27 +38,33 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public Product editar(Product product, Long id) {
-        Product existingProduct = productRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-        
-        BeanUtils.copyProperties(product, existingProduct, getNullPropertyNames(product));
-        
-        if (product.getDimensions() != null && existingProduct.getDimensions() != null) {
-            BeanUtils.copyProperties(product.getDimensions(), existingProduct.getDimensions());
-        }
-        
-        if (product.getMeta() != null && existingProduct.getMeta() != null) {
-            BeanUtils.copyProperties(product.getMeta(), existingProduct.getMeta());
-        }
-        
-        if (product.getReviews() != null) {
-            existingProduct.getReviews().clear();
-            existingProduct.getReviews().addAll(product.getReviews());
-        }
-        
-        return productRepository.save(existingProduct);
+public Product editar(Product product, Long id) {
+    Product existingProduct = productRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+    
+    // Crear una nueva instancia de Product con los cambios
+    Product updatedProduct = new Product();
+    BeanUtils.copyProperties(product, updatedProduct);
+    
+    // Actualizar dimensiones si es necesario
+    if (product.getDimensions() != null && updatedProduct.getDimensions() != null) {
+        BeanUtils.copyProperties(product.getDimensions(), updatedProduct.getDimensions());
     }
+    
+    // Actualizar meta si es necesario
+    if (product.getMeta() != null && updatedProduct.getMeta() != null) {
+        BeanUtils.copyProperties(product.getMeta(), updatedProduct.getMeta());
+    }
+    
+    // Manejar colecciones relajadas
+    Hibernate.initialize(updatedProduct.getReviews());
+    
+    // Reemplazar las reseñas existentes con las nuevas
+    updatedProduct.setReviews(new ArrayList<>(product.getReviews()));
+    
+    // Guardar el producto actualizado
+    return productRepository.saveAndFlush(updatedProduct);
+}
 
     private String[] getNullPropertyNames(Object source) {
         final BeanWrapper src = new BeanWrapperImpl(source);
